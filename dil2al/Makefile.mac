@@ -29,7 +29,7 @@ MACHSPEC=
 MACHSTR=
 GCCTUNE=$(if $(shell gcc -v 2>&1 | grep "^gcc version[^0-9]*[4-9][.]"),-mtune=native)
 #MACHOPT=
-MACHOPT=-march=native $(GCCTUNE) -mfpmath=sse
+MACHOPT=$(GCCTUNE) -mfpmath=sse
 ##
 ## kenji (SUN Ultra):
 #MACHSPEC= -DSUN_RX

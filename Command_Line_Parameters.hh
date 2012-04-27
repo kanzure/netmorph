@@ -31,7 +31,7 @@
 #ifndef __COMMAND_LINE_PARAMETERS_HH
 #define __COMMAND_LINE_PARAMETERS_HH
 
-#include <limits>
+#include <limits.h>
 #include <cfloat>
 //STL#include <vector>
 #include "StringList.hh"

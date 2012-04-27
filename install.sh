@@ -121,11 +121,11 @@ if [ $machinespec -eq 1 ]; then
 else
   if [ $machinespec -eq 2 ]; then
   # Linux64
-    sed 's/MACHSTR=x86/#MACHSTR=x86/g' Makefile.linux > Makefile 
+    sed 's/MACHSTR=x86_64/#MACHSTR=x86_64/g' Makefile.linux > Makefile 
   else
     if [ $machinespec -eq 3 ]; then
     # Mac
-      sed 's/MACHSTR=x86/#MACHSTR=x86/g; s/^\(INCLUDES=.*\)$/\1 -I.\/mac/g' Makefile.linux > Makefile 
+      sed 's/MACHSTR=x86_64/#MACHSTR=x86_64/g; s/^\(INCLUDES=.*\)$/\1 -I.\/mac/g' Makefile.mac > Makefile 
     else
       if [ $machinespec -eq 4 ]; then
       # Cygwin
@@ -175,8 +175,13 @@ else
     mv -f dil2al/* ~/src/dil2al/
 
     cd ~/src/dil2al
-
-    # in case of older versions
+	
+	if [ $machinespec -eq 3 ]; then
+    # Mac
+		sed 's/MACHSTR=x86_64/#MACHSTR=x86_64/g; s/^\(INCLUDES=.*\)$/\1 -I.\/mac/g' Makefile.mac > Makefile
+	fi
+    
+	# in case of older versions
     make clean
     # new dependencies
     ln -s regex-gnu.c regex.c
@@ -188,6 +193,12 @@ else
 fi
 
 cd ~/src/geometry
+
+if [ $machinespec -eq 3 ]; then
+    # Mac
+		sed 's/MACHSTR=x86_64/#MACHSTR=x86_64/g; s/^\(INCLUDES=.*\)$/\1 -I.\/mac/g' Makefile.mac > Makefile
+fi
+
 
 # in case of older versions
 make clean

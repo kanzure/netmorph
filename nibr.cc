@@ -1348,21 +1348,77 @@ int main(int argc, char * argv[]) {
   outputdirectory += dstr;
   // At this point "outputdirectory" is fully available
 
-  if ((n=clp.Specifies_Parameter("warnings_on"))>=0) if (downcase(clp.ParValue(n))==String("off")) warnings_on = WARN_OFF;
-  else if (downcase(clp.ParValue(n))==String("stdout")) warnings_on = WARN_STDOUT;
-  else if (downcase(clp.ParValue(n))==String("stdoutfile")) warnings_on = WARN_STDOUTFILE;
-  else if (downcase(clp.ParValue(n))==String("file")) warnings_on = WARN_FILE;
-  if (warnings_on>WARN_STDOUT) warningfile = outputdirectory + "warnings";
-  if ((n=clp.Specifies_Parameter("reports_on"))>=0) if (downcase(clp.ParValue(n))==String("off")) reports_on = WARN_OFF;
-  else if (downcase(clp.ParValue(n))==String("stdout")) reports_on = WARN_STDOUT;
-  else if (downcase(clp.ParValue(n))==String("stdoutfile")) reports_on = WARN_STDOUTFILE;
-  else if (downcase(clp.ParValue(n))==String("file")) reports_on = WARN_FILE;
-  if (reports_on>WARN_STDOUT) reportfile = outputdirectory + "report";
-  if ((n=clp.Specifies_Parameter("progress_on"))>=0) if (downcase(clp.ParValue(n))==String("off")) progress_on = WARN_OFF;
-  else if (downcase(clp.ParValue(n))==String("stdout")) progress_on = WARN_STDOUT;
-  else if (downcase(clp.ParValue(n))==String("stdoutfile")) progress_on = WARN_STDOUTFILE;
-  else if (downcase(clp.ParValue(n))==String("file")) progress_on = WARN_FILE;
-  if (progress_on>WARN_STDOUT) progressfile = outputdirectory + "progress";
+  if ((n=clp.Specifies_Parameter("warnings_on"))>=0)
+  {
+	if (downcase(clp.ParValue(n))==String("off"))
+	{
+		warnings_on = WARN_OFF;
+	}
+  	else if (downcase(clp.ParValue(n))==String("stdout"))
+	{
+		warnings_on = WARN_STDOUT;
+	}
+  	else if (downcase(clp.ParValue(n))==String("stdoutfile"))
+	{
+		warnings_on = WARN_STDOUTFILE;
+	}
+  	else if (downcase(clp.ParValue(n))==String("file"))
+	{
+		warnings_on = WARN_FILE;
+	}
+  }
+  if (warnings_on>WARN_STDOUT)
+  {
+	warningfile = outputdirectory + "warnings";
+  }
+  
+  if ((n=clp.Specifies_Parameter("reports_on"))>=0)
+  {
+	if (downcase(clp.ParValue(n))==String("off"))
+	{
+		reports_on = WARN_OFF;
+	}
+	else if (downcase(clp.ParValue(n))==String("stdout"))
+	{
+		reports_on = WARN_STDOUT;
+	}
+  	else if (downcase(clp.ParValue(n))==String("stdoutfile"))
+	{
+		reports_on = WARN_STDOUTFILE;
+	}
+  	else if (downcase(clp.ParValue(n))==String("file"))
+	{
+		reports_on = WARN_FILE;
+	}
+  }
+  if (reports_on>WARN_STDOUT)
+  {
+	reportfile = outputdirectory + "report";
+  }
+  
+  if ((n=clp.Specifies_Parameter("progress_on"))>=0)
+  {
+	if (downcase(clp.ParValue(n))==String("off"))
+	{
+		progress_on = WARN_OFF;
+	}
+	else if (downcase(clp.ParValue(n))==String("stdout"))
+	{
+		progress_on = WARN_STDOUT;
+	}
+	else if (downcase(clp.ParValue(n))==String("stdoutfile"))
+	{
+		progress_on = WARN_STDOUTFILE;
+	}
+	else if (downcase(clp.ParValue(n))==String("file"))
+	{
+		progress_on = WARN_FILE;
+	}
+  }
+  if (progress_on>WARN_STDOUT)
+  {
+	progressfile = outputdirectory + "progress";
+  }
   report_compiler_directives();
   reliability_checklist();
 

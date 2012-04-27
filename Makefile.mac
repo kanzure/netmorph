@@ -39,7 +39,7 @@ LIB_PATH= -L$(HOME)/src/lib
 ## Machine selection
 ## -----------------
 ## aurora (x86):
-MACHSPEC=-march=native
+MACHSPEC=
 MACHSTR=
 MACHOPT=
 #MACHOPT=-march=pentium4 -mtune=pentium4 -mfpmath=sse
@@ -134,7 +134,7 @@ SAFEREGEX= -D_BIGREGEX_SAFE_MATCHES
 ## Compiler Options
 ## ----------------
 # Normal:
-COMPOPT=-O3 -p
+COMPOPT=-O3
 OPTSTR=optimized
 ## debugging information:
 # For gprof:

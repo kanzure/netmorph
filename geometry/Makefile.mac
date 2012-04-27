@@ -5,7 +5,7 @@ CC=gcc
 CCPP=g++ 
 
 #MACHOPT=
-MACHOPT=-march=native -mtune=native -mfpmath=sse
+MACHOPT=-mtune=native -mfpmath=sse
 
 GCC3FXTRA=$(if $(shell gcc -v 2>&1 | grep "^gcc version[^0-9]*[3-9][.]"),-Wno-unused-function)
 

@@ -39,8 +39,8 @@ LIB_PATH= -L$(HOME)/src/lib
 ## Machine selection
 ## -----------------
 ## aurora (x86):
-MACHSPEC=
-MACHSTR=x86
+MACHSPEC=-march=native
+MACHSTR=
 MACHOPT=
 #MACHOPT=-march=pentium4 -mtune=pentium4 -mfpmath=sse
 ##
@@ -93,8 +93,8 @@ DEBUGGING=
 #-DDEBUGGING_ELONGATION -DDEBUGGING_DIRECTION -DINCLUDE_PDF_SAMPLING
 ## Put conditional defines, such as -D__SPATIAL_SEGMENT_SUBSET_TEST into
 ## the variable NIBRCONDITIONAL and export before running make.
-CFXTRA= -D__DIL2AL__ -DSTDC_HEADERS -pedantic -Wall -Werror -Wno-char-subscripts $(GCC3FXTRA) $(MEMTESTS) $(PROFILING) $(SYNAPSEINVENTORY) $(STATISTICS) $(MODELCHOICES) $(SIMULATIONMETHODS) $(DEBUGGING) $(OUTPUTCHOICES)
-CPPXTRA= -D__DIL2AL__ -D_ALT_REGEX_H=$(ALT_REGEX_H) -D_USE_ALT_REGEX -D_CPP_REGEX $(NIBRCONDITIONAL) $(MACHOPT) -mieee-fp -ffast-math -pedantic -Wall -Werror $(GCC3FXTRA) $(MEMTESTS) $(PROFILING) $(SYNAPSEINVENTORY) $(STATISTICS) $(MODELCHOICES) $(SIMULATIONMETHODS) $(DEBUGGING) $(CPPTEMPWORKAROUND) $(OUTPUTCHOICES)
+CFXTRA= -D__DIL2AL__ -DSTDC_HEADERS -pedantic -Wall -Wno-char-subscripts $(GCC3FXTRA) $(MEMTESTS) $(PROFILING) $(SYNAPSEINVENTORY) $(STATISTICS) $(MODELCHOICES) $(SIMULATIONMETHODS) $(DEBUGGING) $(OUTPUTCHOICES)
+CPPXTRA= -D__DIL2AL__ -D_ALT_REGEX_H=$(ALT_REGEX_H) -D_USE_ALT_REGEX -D_CPP_REGEX $(NIBRCONDITIONAL) $(MACHOPT) -mieee-fp -ffast-math -pedantic -Wall $(GCC3FXTRA) $(MEMTESTS) $(PROFILING) $(SYNAPSEINVENTORY) $(STATISTICS) $(MODELCHOICES) $(SIMULATIONMETHODS) $(DEBUGGING) $(CPPTEMPWORKAROUND) $(OUTPUTCHOICES)
 REGEXSTR=regex-gnu_for_C++
 FIG2DEV=$(shell which fig2dev)
 ##
@@ -140,7 +140,7 @@ OPTSTR=optimized
 # For gprof:
 #GPROF=-pg
 # For Valgrind:
-#COMPOPT=-g -O0
+#COMPOPT=-g -O0 -Wall
 #OPTSTR=Valgrind
 # For gprof:
 #COMPOPT=-pg -O3
@@ -346,7 +346,7 @@ wizard: wizard.o StringList.o BigString.o BigRegex.o regex-gnu.o
 
 clean:
 	rm -r -f *.o $(NAME)
-	ln -s ../../dil2al/BigString.o
-	ln -s ../../dil2al/BigRegex.o
-	ln -s ../../dil2al/regex-gnu.o
+	ln -s $(HOME)/src/dil2al/BigString.o
+	ln -s $(HOME)/src/dil2al/BigRegex.o
+	ln -s $(HOME)/src/dil2al/regex-gnu.o
 

@@ -25,11 +25,14 @@
 // synapse.cc
 // Randal A. Koene, 20041118
 
+// [Update AC 20110322:]  Added include fibre_structure.hh and APICAL/BASAL flag write to .synapses file
+
 #include "synapse.hh"
 #include "synapse_structure.hh"
 #include "connection.hh"
 #include "Color_Table.hh"
 #include "global.hh"
+#include "fibre_structure.hh"
 
 synaptogenesis_data * SynaptoGenesis_Data = NULL;
 
@@ -149,7 +152,15 @@ Txt_Object * synapse::net_Txt() {
   (*Txt_synapselist) += String((long) Presynaptic_Neuron());
   (*Txt_synapselist) += ',';
   (*Txt_synapselist) += String((long) Postsynaptic_Neuron());
-  if (SynaptoGenesis_Data) (*Txt_synapselist) += String(SynaptoGenesis_Data->find_t_genesis(this),",%f\n");
+  if (SynaptoGenesis_Data) (*Txt_synapselist) += String(SynaptoGenesis_Data->find_t_genesis(this),",%f");
+  if(s->DendriteSegment()->APICAL == 6)
+  {
+	  (*Txt_synapselist) += String(",APICAL\n");
+  }
+  else
+  {
+	  (*Txt_synapselist) += String(",BASAL\n");
+  }
   Txt_synapseindex++;
   return NULL;
 }

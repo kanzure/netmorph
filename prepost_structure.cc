@@ -33,6 +33,7 @@
 #include "Command_Line_Parameters.hh"
 
 // [UPDATE 20080702:] The case in which we define INCLUDE_SCHEMA_PARENT_SET_PROTOCOL_DIRECTION_MODELS is now REQUIRED for compilation.
+// [UPDATE AC 20110322:]  Added _typeid to fibre_structure to enable distinction between Apical and Basal dendrites.
 
 natural_schema_parent_set axons_most_specific_natural_set[UNTYPED_NEURON+1] = {
   all_axons_sps,
@@ -43,7 +44,7 @@ natural_schema_parent_set axons_most_specific_natural_set[UNTYPED_NEURON+1] = {
   all_axons_sps
 };
 
-presynaptic_structure::presynaptic_structure(neuron & _n, Segment & initseg, spatial & acoords, int _typeid): fibre_structure(_n,initseg,acoords) {
+presynaptic_structure::presynaptic_structure(neuron & _n, Segment & initseg, spatial & acoords, int _typeid): fibre_structure(_n,initseg,acoords, _typeid) {
   // If a general or specific parameter settings so indicate, the terminal
   // segment created in this constructor can be associated with a direction
   // model.
@@ -108,7 +109,7 @@ natural_schema_parent_set dendrites_most_specific_natural_set[UNTYPED_NEURON+1] 
   all_dendrites_sps
 };
 
-postsynaptic_structure::postsynaptic_structure(neuron & _n, Segment & initseg, spatial & acoords, int _typeid): fibre_structure(_n,initseg,acoords) {
+postsynaptic_structure::postsynaptic_structure(neuron & _n, Segment & initseg, spatial & acoords, int _typeid): fibre_structure(_n,initseg,acoords, _typeid) {
   // If a general or specific parameter settings so indicate, the terminal
   // segment created in this constructor can be associated with a direction
   // model.

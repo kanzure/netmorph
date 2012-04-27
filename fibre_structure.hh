@@ -28,6 +28,8 @@
 // Classes that define fibre structure and functions that apply both to
 // presynaptic (axonal) and postsynaptic (dendritic) fibre structure..
 
+// [Update AC 201110322:]  Added APICAL flag to fibre_segment
+
 #ifndef __FIBRE_STRUCTURE_HH
 #include <unistd.h>
 #include <math.h>
@@ -157,6 +159,7 @@ protected:
   // *** I can make this able to have more than one branch, or I can
   // create different classes for that and change fibre_structure from
   // inheriting fibre_segment to linking to a type of fibre_segment.
+  int APICAL;
 #ifdef INCLUDE_SIMPLE_FIBER_DIAMETER
   double diameter; // [***NOTE] I can (a) replace this with a pointer to a bunch of specialized data, or (b) used derived classes such as the "solid" classes defined below.
 #endif
@@ -166,17 +169,17 @@ protected:
   }
 public:
 #ifdef VECTOR3D
-  fibre_segment(neuron & _n, fibre_segment * p, extra_fibre_data & efd): n(&_n), d(efd), parent(p), branch1(NULL), branch2(NULL)
+  fibre_segment(neuron & _n, fibre_segment * p, extra_fibre_data & efd): n(&_n), d(efd), parent(p), branch1(NULL), branch2(NULL), APICAL(parent->APICAL)
 #ifdef INCLUDE_SIMPLE_FIBER_DIAMETER
 						      , diameter(0.0)
 #endif
   { fibre_segment_initialization(); }
-  fibre_segment(neuron & _n, fibre_segment * p, extra_fibre_data & efd, Segment & s): Segment(s), n(&_n), d(efd), parent(p), branch1(NULL), branch2(NULL)
+  fibre_segment(neuron & _n, fibre_segment * p, extra_fibre_data & efd, Segment & s, int AP): Segment(s), n(&_n), d(efd), parent(p), branch1(NULL), branch2(NULL), APICAL(AP)
 #ifdef INCLUDE_SIMPLE_FIBER_DIAMETER
 						      , diameter(0.0)
 #endif
   { fibre_segment_initialization(); }
-  fibre_segment(neuron & _n, fibre_segment * p, extra_fibre_data & efd, spatial & segstart, spatial & segend): Segment(segstart,segend), n(&_n), d(efd), parent(p), branch1(NULL), branch2(NULL)
+  fibre_segment(neuron & _n, fibre_segment * p, extra_fibre_data & efd, spatial & segstart, spatial & segend): Segment(segstart,segend), n(&_n), d(efd), parent(p), branch1(NULL), branch2(NULL), APICAL(parent->APICAL)
 #ifdef INCLUDE_SIMPLE_FIBER_DIAMETER
 						      , diameter(0.0)
 #endif
@@ -189,17 +192,17 @@ public:
   fibre_segment * continuation_node_to_branch(extra_fibre_data & efd);
 #endif
 #ifdef VECTOR2D
-  fibre_segment(neuron & _n, fibre_segment * p): n(&_n), parent(p), branch1(NULL), branch2(NULL)
+  fibre_segment(neuron & _n, fibre_segment * p): n(&_n), parent(p), branch1(NULL), branch2(NULL), APICAL(parent->APICAL)
 #ifdef INCLUDE_SIMPLE_FIBER_DIAMETER
 						      , diameter(0.0)
 #endif
   {}
-  fibre_segment(neuron & _n, fibre_segment * p, Segment & s): Segment(s), n(&_n), parent(p), branch1(NULL), branch2(NULL)
+  fibre_segment(neuron & _n, fibre_segment * p, Segment & s, int AP): Segment(s), n(&_n), parent(p), branch1(NULL), branch2(NULL), APICAL(AP)
 #ifdef INCLUDE_SIMPLE_FIBER_DIAMETER
 						      , diameter(0.0)
 #endif
   {}
-  fibre_segment(neuron & _n, fibre_segment * p, spatial & segstart, spatial & segend): Segment(segstart,segend), n(&_n), parent(p), branch1(NULL), branch2(NULL)
+  fibre_segment(neuron & _n, fibre_segment * p, spatial & segstart, spatial & segend): Segment(segstart,segend), n(&_n), parent(p), branch1(NULL), branch2(NULL), APICAL(parent->APICAL)
 #ifdef INCLUDE_SIMPLE_FIBER_DIAMETER
 						      , diameter(0.0)
 #endif
@@ -372,15 +375,21 @@ public:
   // postsynaptic_structure assures that elmodel is valid.
 #ifdef VECTOR3D
   fibre_structure(neuron & _n): fibre_segment(_n,NULL,root_efd), terminalsegmentsarray(NULL), terminalarraylength(0), elmodel(NULL), bmmodel(NULL), sum_l_i_cache(0.0), sum_l_i_cache_t(eq->T()), colnum(0), cache(0.0) { terminalsegments.link_before(new terminal_segment(*this,*this)); }
-  fibre_structure(neuron & _n, Segment & s): fibre_segment(_n,NULL,root_efd,s), terminalsegmentsarray(NULL), terminalarraylength(0), elmodel(NULL), bmmodel(NULL), sum_l_i_cache(0.0), sum_l_i_cache_t(eq->T()), colnum(0), cache(0.0) { terminalsegments.link_before(new terminal_segment(*this,*this)); }
+
+  fibre_structure(neuron & _n, Segment & s, int AP): fibre_segment(_n,NULL,root_efd,s,AP), terminalsegmentsarray(NULL), terminalarraylength(0), elmodel(NULL), bmmodel(NULL), sum_l_i_cache(0.0), sum_l_i_cache_t(eq->T()), colnum(0), cache(0.0) { terminalsegments.link_before(new terminal_segment(*this,*this)); }
+
   fibre_structure(neuron & _n, spatial & segstart, spatial & segend): fibre_segment(_n,NULL,root_efd,segstart,segend), terminalsegmentsarray(NULL), terminalarraylength(0), elmodel(NULL), bmmodel(NULL), sum_l_i_cache(0.0), sum_l_i_cache_t(eq->T()), colnum(0), cache(0.0) { terminalsegments.link_before(new terminal_segment(*this,*this)); }
-  fibre_structure(neuron & _n, Segment & s, spatial & acoords): fibre_segment(_n,NULL,root_efd,s), terminalsegmentsarray(NULL), terminalarraylength(0), elmodel(NULL), bmmodel(NULL), sum_l_i_cache(0.0), sum_l_i_cache_t(eq->T()), colnum(0), cache(0.0) { terminalsegments.link_before(new terminal_segment(*this,*this,acoords)); }
+
+  fibre_structure(neuron & _n, Segment & s, spatial & acoords, int AP): fibre_segment(_n,NULL,root_efd,s,AP), terminalsegmentsarray(NULL), terminalarraylength(0), elmodel(NULL), bmmodel(NULL), sum_l_i_cache(0.0), sum_l_i_cache_t(eq->T()), colnum(0), cache(0.0) { terminalsegments.link_before(new terminal_segment(*this,*this,acoords)); }
 #endif
 #ifdef VECTOR2D
   fibre_structure(neuron & _n): fibre_segment(_n,NULL), terminalsegmentsarray(NULL), terminalarraylength(0), elmodel(NULL), bmmodel(NULL), sum_l_i_cache(0.0), sum_l_i_cache_t(eq->T()), colnum(0), cache(0.0) { terminalsegments.link_before(new terminal_segment(*this,*this)); }
-  fibre_structure(neuron & _n, Segment & s): fibre_segment(_n,NULL,s), terminalsegmentsarray(NULL), terminalarraylength(0), elmodel(NULL), bmmodel(NULL), sum_l_i_cache(0.0), sum_l_i_cache_t(eq->T()), colnum(0), cache(0.0) { terminalsegments.link_before(new terminal_segment(*this,*this)); }
+
+  fibre_structure(neuron & _n, Segment & s, int AP): fibre_segment(_n,NULL,s,AP), terminalsegmentsarray(NULL), terminalarraylength(0), elmodel(NULL), bmmodel(NULL), sum_l_i_cache(0.0), sum_l_i_cache_t(eq->T()), colnum(0), cache(0.0) { terminalsegments.link_before(new terminal_segment(*this,*this)); }
+
   fibre_structure(neuron & _n, spatial & segstart, spatial & segend): fibre_segment(_n,NULL,segstart,segend), terminalsegmentsarray(NULL), terminalarraylength(0), elmodel(NULL), bmmodel(NULL), sum_l_i_cache(0.0), sum_l_i_cache_t(eq->T()), colnum(0), cache(0.0) { terminalsegments.link_before(new terminal_segment(*this,*this)); }
-  fibre_structure(neuron & _n, Segment & s, spatial & acoords): fibre_segment(_n,NULL,s), terminalsegmentsarray(NULL), terminalarraylength(0), elmodel(NULL), bmmodel(NULL), sum_l_i_cache(0.0), sum_l_i_cache_t(eq->T()), colnum(0), cache(0.0) { terminalsegments.link_before(new terminal_segment(*this,*this,acoords)); }
+
+  fibre_structure(neuron & _n, Segment & s, spatial & acoords, int AP): fibre_segment(_n,NULL,s,AP), terminalsegmentsarray(NULL), terminalarraylength(0), elmodel(NULL), bmmodel(NULL), sum_l_i_cache(0.0), sum_l_i_cache_t(eq->T()), colnum(0), cache(0.0) { terminalsegments.link_before(new terminal_segment(*this,*this,acoords)); }
 #endif
   //fibre_structure(double a, double l): fibre_segment(a,l), terminalsegmentsarray(NULL), terminalarraylength(0), cache(0.0) { terminalsegments.link_before(new terminal_segment(*this,*this)); }
   virtual ~fibre_structure() { delete[] terminalsegmentsarray; if (elmodel) delete elmodel; if (bmmodel) delete bmmodel; }
